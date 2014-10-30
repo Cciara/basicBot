@@ -2399,7 +2399,7 @@
                     }
                 }
             },
-            RaffleCommand: {
+            raffleCommand: {
                 command: 'raffle',
                 rank: 'mod',
                 type: 'exact',
