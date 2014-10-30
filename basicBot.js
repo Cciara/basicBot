@@ -299,6 +299,32 @@
                 }
             }
         },
+            Raffle: {
+                raffleStatus: false,
+                participants: [],
+                countdown: null,
+                startRaffle: function () {
+                    basicBot.room.raffle.raffleStatus = true;
+                    basicBot.room.raffle.countdown = setTimeout(function () {
+                        basicBot.room.raffle.endraffle();
+                    }, 60 * 1000);
+                    API.sendChat(basicBot.chat.isopen);
+                },
+                endRaffle: function () {
+                    basicBot.room.Raffle.raffleStatus = false;
+                    var ind = Math.floor(Math.random() * basicBot.room.raffle.participants.length);
+                    var winner = basicBot.room.raffle.participants[ind];
+                    basicBot.room.raffle.participants = [];
+                    var pos = Math.floor((Math.random() * API.getWaitList().length) + 1);
+                    var user = basicBot.userUtilities.lookupUser(winner);
+                    var name = user.username;
+                    API.sendChat(subChat(basicBot.chat.winnerpicked, {name: name, position: pos}));
+                    setTimeout(function (winner, pos) {
+                        basicBot.userUtilities.moveUser(winner, pos, false);
+                    }, 1 * 1000, winner, pos);
+                }
+            },
+
         User: function (id, name) {
             this.id = id;
             this.username = name;
@@ -2373,7 +2399,16 @@
                     }
                 }
             },
-
+            RaffleCommand: {
+                command: 'raffle',
+                rank: 'mod',
+                type: 'exact',
+                functionality: function (chat, cmd) {
+                    if (this.type === 'exact' && chat.message.length !== cmd.length) return void (0);
+                    if (!basicBot.commands.executable(this.rank, chat)) return void (0);
+                    else {
+                        if (!basicBot.room.raffle.raffleStatus) {
+                            basicBot.room.raffle.startraffle();
             rulesCommand: {
                 command: 'rules',
                 rank: 'user',
