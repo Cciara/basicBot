@@ -2409,6 +2409,10 @@
                     else {
                         if (!basicBot.room.raffle.raffleStatus) {
                             basicBot.room.raffle.startraffle();
+                        }
+                    }
+                }
+            },
             rulesCommand: {
                 command: 'rules',
                 rank: 'user',
