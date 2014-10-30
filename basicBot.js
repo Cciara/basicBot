@@ -297,9 +297,9 @@
                         basicBot.userUtilities.moveUser(winner, pos, false);
                     }, 1 * 1000, winner, pos);
                 }
-            }
-        },
-            Raffle: {
+            },
+
+            raffle: {
                 raffleStatus: false,
                 participants: [],
                 countdown: null,
