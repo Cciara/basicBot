@@ -2856,7 +2856,7 @@
                 }
             }
         }
-    };
+    }
 
     loadChat(basicBot.startup);
 }).call(this);
