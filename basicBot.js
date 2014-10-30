@@ -273,45 +273,19 @@
             },
             newBlacklisted: [],
             newBlacklistedSongFunction: null,
-            roulette: {
-                rouletteStatus: false,
-                participants: [],
-                countdown: null,
-                startRoulette: function () {
-                    basicBot.room.roulette.rouletteStatus = true;
-                    basicBot.room.roulette.countdown = setTimeout(function () {
-                        basicBot.room.roulette.endRoulette();
-                    }, 60 * 1000);
-                    API.sendChat(basicBot.chat.isopen);
-                },
-                endRoulette: function () {
-                    basicBot.room.roulette.rouletteStatus = false;
-                    var ind = Math.floor(Math.random() * basicBot.room.roulette.participants.length);
-                    var winner = basicBot.room.roulette.participants[ind];
-                    basicBot.room.roulette.participants = [];
-                    var pos = Math.floor((Math.random() * API.getWaitList().length) + 1);
-                    var user = basicBot.userUtilities.lookupUser(winner);
-                    var name = user.username;
-                    API.sendChat(subChat(basicBot.chat.winnerpicked, {name: name, position: pos}));
-                    setTimeout(function (winner, pos) {
-                        basicBot.userUtilities.moveUser(winner, pos, false);
-                    }, 1 * 1000, winner, pos);
-                }
-            },
-
             raffle: {
                 raffleStatus: false,
                 participants: [],
                 countdown: null,
-                startRaffle: function () {
+                startraffle: function () {
                     basicBot.room.raffle.raffleStatus = true;
                     basicBot.room.raffle.countdown = setTimeout(function () {
                         basicBot.room.raffle.endraffle();
                     }, 60 * 1000);
                     API.sendChat(basicBot.chat.isopen);
                 },
-                endRaffle: function () {
-                    basicBot.room.Raffle.raffleStatus = false;
+                endRoulette: function () {
+                    basicBot.room.raffle.raffleStatus = false;
                     var ind = Math.floor(Math.random() * basicBot.room.raffle.participants.length);
                     var winner = basicBot.room.raffle.participants[ind];
                     basicBot.room.raffle.participants = [];
@@ -1557,15 +1531,14 @@
                     'has given you a soft homemade oatmeal cookie!',
                     'has given you a plain, dry, old cookie. It was the last one in the bag. Gross.',
                     'gives you a sugar cookie. What, no frosting and sprinkles? 0/10 would not touch.',
-                    'gives you a chocolate chip cookie. Oh wait, those are raisins. Bleck!',
+                    'gives you a chocolate chip cookie. Oh wait, those are spiders. Bleck!',
                     'gives you an enormous cookie. Poking it gives you more cookies. Weird.',
                     'gives you a fortune cookie. It reads "Why aren\'t you working on any projects?"',
                     'gives you a fortune cookie. It reads "Give that special someone a compliment"',
-                    'gives you a fortune cookie. It reads "Take a risk!"',
                     'gives you a fortune cookie. It reads "Go outside."',
                     'gives you a fortune cookie. It reads "Don\'t forget to eat your veggies!"',
                     'gives you a fortune cookie. It reads "Do you even lift?"',
-                    'gives you a fortune cookie. It reads "m808 pls"',
+                    'gives you a fortune cookie. It reads "free hugs!"',
                     'gives you a fortune cookie. It reads "If you move your hips, you\'ll get all the ladies."',
                     'gives you a fortune cookie. It reads "I love you."',
                     'gives you a Golden Cookie. You can\'t eat it because it is made of gold. Dammit.',
@@ -1573,6 +1546,7 @@
                     'gives you a rainbow cookie made with love :heart:',
                     'gives you an old cookie that was left out in the rain, it\'s moldy.',
                     'bakes you fresh cookies, it smells amazing.'
+                    'bakes you a fresh yummy cookie! WiKi_KiKi decides to eat it...'
                 ],
                 getCookie: function () {
                     var c = Math.floor(Math.random() * this.cookies.length);
@@ -2385,20 +2359,6 @@
                 }
             },
 
-            rouletteCommand: {
-                command: 'roulette',
-                rank: 'mod',
-                type: 'exact',
-                functionality: function (chat, cmd) {
-                    if (this.type === 'exact' && chat.message.length !== cmd.length) return void (0);
-                    if (!basicBot.commands.executable(this.rank, chat)) return void (0);
-                    else {
-                        if (!basicBot.room.roulette.rouletteStatus) {
-                            basicBot.room.roulette.startRoulette();
-                        }
-                    }
-                }
-            },
             raffleCommand: {
                 command: 'raffle',
                 rank: 'mod',
@@ -2413,6 +2373,7 @@
                     }
                 }
             },
+           
             rulesCommand: {
                 command: 'rules',
                 rank: 'user',
